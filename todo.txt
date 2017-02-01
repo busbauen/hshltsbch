@@ -9,3 +9,5 @@ todo:
 - graphs
 - average ausgaben über Zeitraum X
 - ansicht für monatliches/jährliches
+- aus 2017/2 einfach Februar machen
+- spacer bei #summary in month.html

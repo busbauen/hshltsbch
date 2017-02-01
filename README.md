@@ -1,8 +1,8 @@
 # hshltsbch
-Installation:
+Installation: <br>
 
-virtualenv venv
-source venv/bin/activate
-pip install flask
+virtualenv venv<br>
+source venv/bin/activate<br>
+pip install flask<br>
 
 

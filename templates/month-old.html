@@ -1,0 +1,30 @@
+<html>
+<body>
+    <p>Ausgaben<p>
+    <ul id="navigation">
+    {% for item in data %}
+        <p> {{ item[0] }} {{ item[1] }}{{ item[2] }}{{ item[3] }}   <p>
+    {% endfor %}
+    </ul>
+
+    <p>Einnahmen<p>
+    <ul id="navigation">
+    {% for item in data3 %}
+        <p> {{ item[0] }} {{ item[1] }}{{ item[2] }}{{ item[3] }}   <p>
+    {% endfor %}
+    </ul>
+    
+    <p> monthlly <p>
+    <ul id="navigation">
+    {% for item in data2 %}
+        <p> {{ item[0] }} {{ item[1] }}{{ item[2] }}{{ item[3] }}   <p>
+    {% endfor %}
+    </ul>
+    
+    <p>ausgabe pro kostenart <p>
+    <ul id="navigation">
+    {% for item in data4 %}
+        <p> {{ item[0] }} {{ item[1] }}{{ item[2] }}{{ item[3] }}   <p>
+    {% endfor %}
+</body>
+</html>

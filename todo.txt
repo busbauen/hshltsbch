@@ -1,0 +1,10 @@
+bugs:
+- bei /new Input besser validieren
+- OK / Fehlermeldungen schöner machen
+- auf einnahmen oder ausgaben only checken
+- Kostenstelle Dropdown lädt nicht mehr wenn man schon einmal was eingegeben hat!?
+
+
+todo:
+- graphs
+- average ausgaben über Zeitraum X

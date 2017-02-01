@@ -46,7 +46,6 @@ def login():
         if request.form.get('username') == app.config['USER'] and \
            request.form.get('password') == app.config['PASS']:
                session['logged_in'] = True
-               flash('Eingeloggt.')
                return redirect('/')
         else:
             flash('Nö')
@@ -166,7 +165,7 @@ def new():
             erstellt = request.form.get('erstellt')
             kostenart = request.form.get('kostenart')
             kostenstelle = request.form.get('kostenstelle')
-            betrag = int(request.form.get('betrag'))
+            betrag = float(request.form.get('betrag').replace(',','.'))
             if betrag < 0:
                 betrag = betrag *-1
             kommentar = request.form.get('kommentar')
@@ -177,6 +176,9 @@ def new():
             print(kostenstelle)
             cur.execute("SELECT id from kostenstelle where name = (?)", (kostenstelle,))
             row = cur.fetchone()
+            if row == None:
+                flash('Die Kostenstelle gibt es nicht!', 'red')
+                return render_template('new.html')
             kostenstelle_id = row[0]
             cur.execute("INSERT INTO eintrag (erstellt, kostenart, betrag, kostenstelle_id, kommentar, abschreibung) VALUES (?,?,?,?,?,?)" , ('2017-01-11 10:00:00', kostenart, betrag, kostenstelle_id, kommentar, abschreibung))
             con.commit()

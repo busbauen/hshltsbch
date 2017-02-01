@@ -4,9 +4,9 @@ import sqlite3  as sql
 
 con = sql.connect("hshltsbch.db")
 print("dropping tables")
-con.execute("drop table kostenstelle;")
-con.execute("drop table eintrag;")
-con.commit()
+#con.execute("drop table kostenstelle;")
+#con.execute("drop table eintrag;")
+#con.commit()
 print("creating tables")
 con.execute("CREATE TABLE IF NOT EXISTS kostenstelle (id integer PRIMARY KEY,name varchar(30));")
 con.commit()

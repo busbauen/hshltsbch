@@ -14,7 +14,7 @@
 <form action="/new" method="post">
     <label>Kostenstelle</label> <input required type="text" name="kostenstelle" id="kostenstelle" placeholder="Kostenstelle">
     <label>Betrag</label><input type="text" name="betrag" required placeholder="Betrag">
-    <label>Kommentar</label><input type="text" name="kommentar" placeholder="Kommentar">
+    <label>Kommentar</label><input type="text" name="kommentar" id="kommentar" placeholder="Kommentar">
     <label>Erstellt</label> <input type="date" class="datepicker" required name="erstellt" id="erstellt" placeholder="Erstellt">
     <label>Kostenart</label><input type="text" required name="kostenart" id="kostenart" placeholder="Kostenart" value="ausgaben">
     <label>Abschreibung</label><input type="text" required name="abschreibung" id="abschreibung" placeholder="Abschreibung" value="tag">
@@ -50,6 +50,8 @@ $("#kostenart").autocomplete({source:kostenarten});
 var abschreibung = ['jahr','monat','tag'];
 $("#abschreibung").autocomplete({source:abschreibung});
 
+var kommentar = ['tanken','blablacar'];
+$("#kommentar").autocomplete({source:kommentar});
 </script>
 
 {% endblock %}

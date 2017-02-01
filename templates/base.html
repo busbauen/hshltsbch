@@ -25,7 +25,7 @@
             <li><a href="/logout">Logout</a></li>
             <li><a>Vergangene Monate</a></li>
             {% for item in list_months_sidebar %}
-            <li><a style="position:relative;left:5%" href="/month/{{  item[0] }}/{{ item[1] }}">{{  item[0] }} {{ item[1] }}</a></li>
+            <li><a style="position:relative;left:5%" href="/month/{{  item[0] }}/{{ item[1] }}">{{  item[0] }} {{ item[1] }}</a></li> 
             {% endfor %}
           </ul>
         </div>
@@ -35,6 +35,8 @@
 
             {% block body %} {% endblock %}
 
+            <br>
+            <br>
         </div>
         <!--Import jQuery before materialize.js-->
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>

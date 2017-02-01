@@ -8,3 +8,4 @@ bugs:
 todo:
 - graphs
 - average ausgaben über Zeitraum X
+- ansicht für monatliches/jährliches

@@ -10,96 +10,117 @@
     </div>
 </div>
 
-    <div id="ausgaben">
+<div id="ausgaben">
     <h5>Monatliche Ausgaben für {{ year }}/{{ month }}</h5>
-        <table class="bordered highlight col s12">
-            <thead>
-                <tr>
-                    <th data-field="datum">Datum</th>
-                    <th data-field="kategorie">Kategorie</th>
-                    <th data-field="betrag">Betrag</th>
-                    <th data-field="kommentar">Kommentar</th>
-                </tr>
-            </thead>
+    <table class="bordered highlight col s12">
+        <thead>
+            <tr>
+                <th data-field="datum">Datum</th>
+                <th data-field="kategorie">Kategorie</th>
+                <th data-field="betrag">Betrag</th>
+                <th data-field="kommentar">Kommentar</th>
+            </tr>
+        </thead>
 
-            <tbody>
-                {% for expense in expenses %}
-                <tr>
-                    <td>{{ expense[0] }}</td>
-                    <td>{{ expense[1] }}</td>
-                    <td>{{ expense[2] }}</td>
-                    <td>{{ expense[3] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <div id="einnahmen">
-        <h5>Monatliche Einnahmen für {{ year }}/{{ month }}</h5>
-        <table class="bordered highlight">
-            <thead>
-                <tr>
-                    <th data-field="datum">Datum</th>
-                    <th data-field="kategorie">Kategorie</th>
-                    <th data-field="betrag">Betrag</th>
-                    <th data-field="kommentar">Kommentar</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                {% for income in incomes %}
-                <tr>
-                    <td>{{ income[0] }}</td>
-                    <td>{{ income[1] }}</td>
-                    <td>{{ income[2] }}</td>
-                    <td>{{ income[3] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <div id="summary">
-    <h5>Summary für die Ausgaben {{ year }}/{{ month }}</h5>
-        <table class="col s6 bordered highlight">
-            <thead>
-                <tr>
-                    <th data-field="kategorie">Kategorie</th>
-                    <th data-field="Summe">Summe</th>
-                </tr>
-            </thead>
-
-            {% for s in month_summary_out %}
-            <tbody>
-                <tr>
-                    <td>{{ s[0] }}</td>
-                    <td>{{ s[1] }}</td>
-                </tr>
-                </tr>
-            </tbody>
+        <tbody>
+            {% for expense in expenses %}
+            <tr>
+                <td>{{ expense[0] }}</td>
+                <td>{{ expense[1] }}</td>
+                <td>{{ expense[2] }}</td>
+                <td>{{ expense[3] }}</td>
+            </tr>
             {% endfor %}
-        </table>
-        <h5>Summary für die Einnahmen {{ year }}/{{ month }}</h5>
-        <table class="col s6 bordered highlight">
-            <thead>
-                <tr>
-                    <th data-field="kategorie">Kategorie</th>
-                    <th data-field="Summe">Summe</th>
-                </tr>
-            </thead>
-
-            {% for s in month_summary_in %}
-            <tbody>
-                <tr>
-                    <td>{{ s[0] }}</td>
-                    <td>{{ s[1] }}</td>
-                </tr>
-                </tr>
-            </tbody>
-            {% endfor %}
-        </table>
+        </tbody>
+    </table>
 </div>
+
+<div id="einnahmen">
+    <h5>Monatliche Einnahmen für {{ year }}/{{ month }}</h5>
+    <table class="bordered highlight">
+        <thead>
+            <tr>
+                <th data-field="datum">Datum</th>
+                <th data-field="kategorie">Kategorie</th>
+                <th data-field="betrag">Betrag</th>
+                <th data-field="kommentar">Kommentar</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for income in incomes %}
+            <tr>
+                <td>{{ income[0] }}</td>
+                <td>{{ income[1] }}</td>
+                <td>{{ income[2] }}</td>
+                <td>{{ income[3] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div id="summary">
+    <h5>Summary für die Ausgaben {{ year }}/{{ month }}</h5>
+    <table class="col s6 bordered highlight">
+        <thead>
+            <tr>
+                <th data-field="kategorie">Kategorie</th>
+                <th data-field="Summe">Summe</th>
+            </tr>
+        </thead>
+
+        {% for s in month_summary_out %}
+        <tbody>
+            <tr>
+                <td>{{ s[0] }}</td>
+                <td>{{ s[1] }}</td>
+            </tr>
+            </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+    <h5>Summary für die Einnahmen {{ year }}/{{ month }}</h5>
+    <table class="col s6 bordered highlight">
+        <thead>
+            <tr>
+                <th data-field="kategorie">Kategorie</th>
+                <th data-field="Summe">Summe</th>
+            </tr>
+        </thead>
+
+        {% for s in month_summary_in %}
+        <tbody>
+            <tr>
+                <td>{{ s[0] }}</td>
+                <td>{{ s[1] }}</td>
+            </tr>
+            </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+
+    <h5>Total </h5>
+    <table class="bordered highlight col s12">
+        <thead>
+            <tr>
+                <th>Einnahmen</th>
+                <th>Ausgaben</th>
+                <th>Saldo</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>{{ month_total_in }}</td>
+                <td>{{ month_total_out }}</td>
+                {% set saldo = month_total_in - month_total_out %}
+                <td>{{ saldo|round(2) }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
 
 <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
@@ -122,19 +143,17 @@ Morris.Donut({
 
 <!--<div id="bar-example"></div>  -->
 
-<p>Total in:  {{ month_total_in[0][0] }} </p>
-<p>Total out: {{ month_total_out[0][0] }} </p>
-      <script>
+<script>
 Morris.Bar({
-  element: 'bar-example',
-  resize: 'true',
-  data: [
+    element: 'bar-example',
+    resize: 'true',
+    data: [
     { y: '2006', a: 291, b: 1138 },
     { y: '2006', a: 900, b: 1138 },
-  ],
-  xkey: 'y',
-  ykeys: ['a', 'b'],
-  labels: ['Series A', 'Series B']
+    ],
+    xkey: 'y',
+    ykeys: ['a', 'b'],
+    labels: ['Series A', 'Series B']
 });
-      </script>
+</script>
 {% endblock  %}

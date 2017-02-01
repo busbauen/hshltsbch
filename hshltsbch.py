@@ -30,7 +30,7 @@ def login_required(fn):
 def get_all_months():
     cur = get_db().cursor()
     cur.execute("select strftime('%Y', erstellt) ,strftime('%m', erstellt) from eintrag group by strftime('%Y', erstellt) ,strftime('%m', erstellt)")
-    return cur.fetchall()
+    return  cur.fetchall()
 
 def get_current_month():
     now = datetime.datetime.now()
@@ -40,9 +40,6 @@ def get_current_month():
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST' and request.form.get('username') and request.form.get('password'):
-        print(request.form.get('username'))
-        print(request.form.get('password'))
-        
         if request.form.get('username') == app.config['USER'] and \
            request.form.get('password') == app.config['PASS']:
                session['logged_in'] = True
@@ -55,11 +52,6 @@ def login():
 def logout():
     session.clear()
     return redirect(url_for('index'))
-
-@app.route('/test')
-def test():
-    get_all_months()
-    return render_template('base.html')
 
 @app.route('/month/<int:year>/<int:month>')
 @login_required
@@ -91,12 +83,10 @@ def month(year, month):
     month_total_in = cur.fetchall()
   
     query = "SELECT printf('%%.02f', sum(betrag)) FROM eintrag WHERE strftime('%%m', erstellt) = '%02d' AND strftime('%%Y', erstellt) = '%d' AND abschreibung='tag' AND kostenart='ausgaben'" % (month, year)
-    print(query)
     cur.execute(query)
     month_total_out = cur.fetchall()
 
-    
-    return render_template("month.html", list_months_sidebar=list_months_sidebar, current_month=current_month, incomes=incomes, expenses=nice_expenses, year=year, month=month, month_summary_in=month_summary_in, month_summary_out = month_summary_out, month_total_in=month_total_in, month_total_out=month_total_out)
+    return render_template("month.html", list_months_sidebar=list_months_sidebar, current_month=current_month, incomes=incomes, expenses=nice_expenses, year=year, month=month, month_summary_in=month_summary_in, month_summary_out = month_summary_out, month_total_in=round(float(month_total_in[0][0]),2), month_total_out=round(float(month_total_out[0][0]),2))
 
 
 @app.route('/')
@@ -110,47 +100,31 @@ def index():
     cur.execute(query)
     expenses_year = cur.fetchall()
     expenses_year_dict = dict((k[0],k[1]) for k in expenses_year)
-    print("Jährliches")
-    for e in expenses_year:
-        print(e)
     
     query="SELECT strftime('%Y', erstellt), printf('%.02f', sum(betrag)) from eintrag where kostenart='ausgaben' and abschreibung='monat' group by strftime('%Y', erstellt)"
     cur.execute(query)
     expenses_month = cur.fetchall()
     expenses_month_dict = dict((k[0],k[1]) for k in expenses_month)
-    print("Monatliche Fixkosten")
-    for e in expenses_month:
-        print(e)
     
     query="SELECT strftime('%Y', erstellt), strftime('%m', erstellt), printf('%.02f', sum(betrag)) from eintrag where kostenart='ausgaben' and abschreibung='tag' group by strftime('%Y', erstellt),strftime('%m', erstellt)"
     cur.execute(query)
     expenses_day = cur.fetchall()
-    print("Monatliche Ausgaben")
-    for e in expenses_day:
-        print(e)
     
     query="SELECT strftime('%Y', erstellt), strftime('%m', erstellt), printf('%.02f', sum(betrag)) from eintrag where kostenart='einnahmen' and abschreibung='tag' group by strftime('%Y', erstellt),strftime('%m', erstellt)"
     cur.execute(query)
     income = cur.fetchall()
-    print("Monatliche Einnahmen")
-    for r in income:
-        print(r)
 
-    print("lets go")
     stats = [] 
     for i in range(0, len(income)):
         item = (income[i][0], income[i][1], expenses_year_dict[income[i][0]], expenses_month_dict[income[i][0]], expenses_day[i][2],None , income[i][2], None)
         stats.append(list(item))
-        print(item)
-    
-    print("done") 
-    for i in range(0, len(income)):
-        stats[i][5] = float(stats[i][2]) +float(stats[i][3]) + float(stats[i][4])
     
     for i in range(0, len(income)):
-        stats[i][7] = float(stats[i][6]) - float(stats[i][5]) - 41.89
-        stats[i][7] = round(stats[i][7], 2) 
-        print(stats[i])
+        stats[i][5] = round(float(stats[i][2]) +float(stats[i][3]) + float(stats[i][4]),2)
+    
+    for i in range(0, len(income)):
+        stats[i][7] = round(float(stats[i][6]) - float(stats[i][5]),2)
+
  
     return render_template('summary.html', list_months_sidebar=list_months_sidebar, current_month=current_month, stats=stats)
 
@@ -173,14 +147,13 @@ def new():
 
             con = get_db()
             cur = con.cursor()
-            print(kostenstelle)
             cur.execute("SELECT id from kostenstelle where name = (?)", (kostenstelle,))
             row = cur.fetchone()
             if row == None:
                 flash('Die Kostenstelle gibt es nicht!', 'red')
-                return render_template('new.html')
+                return render_template('new.html', list_months_sidebar=list_months_sidebar, current_month=current_month)
             kostenstelle_id = row[0]
-            cur.execute("INSERT INTO eintrag (erstellt, kostenart, betrag, kostenstelle_id, kommentar, abschreibung) VALUES (?,?,?,?,?,?)" , ('2017-01-11 10:00:00', kostenart, betrag, kostenstelle_id, kommentar, abschreibung))
+            cur.execute("INSERT INTO eintrag (erstellt, kostenart, betrag, kostenstelle_id, kommentar, abschreibung) VALUES (?,?,?,?,?,?)" , (erstellt + ' 10:00:00', kostenart, betrag, kostenstelle_id, kommentar, abschreibung))
             con.commit()
             flash('OK', 'green')
             return render_template('new.html', list_months_sidebar=list_months_sidebar, current_month=current_month )

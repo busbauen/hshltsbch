@@ -11,7 +11,7 @@
 </div>
 
 <div id="ausgaben">
-    <h5>Monatliche Ausgaben für {{ year }}/{{ month }}</h5>
+    <h5>Ausgaben {{ month }}</h5>
     <table class="bordered highlight col s12">
         <thead>
             <tr>
@@ -33,10 +33,11 @@
             {% endfor %}
         </tbody>
     </table>
+    <h5>Summe: {{ month_total_out }}</h5>
 </div>
 
 <div id="einnahmen">
-    <h5>Monatliche Einnahmen für {{ year }}/{{ month }}</h5>
+    <h5>Einnahmen für {{ month }}</h5>
     <table class="bordered highlight">
         <thead>
             <tr>
@@ -58,10 +59,11 @@
             {% endfor %}
         </tbody>
     </table>
+    <h5>Einnahmen: {{ month_total_in }}</h5>
 </div>
 
 <div id="summary">
-    <h5>Summary für die Ausgaben {{ year }}/{{ month }}</h5>
+    <h5>Ausgaben {{ month }}</h5>
     <table class="col s6 bordered highlight">
         <thead>
             <tr>
@@ -80,7 +82,7 @@
         </tbody>
         {% endfor %}
     </table>
-    <h5>Summary für die Einnahmen {{ year }}/{{ month }}</h5>
+    <h5>Einnahmen {{ month }}</h5>
     <table class="col s6 bordered highlight">
         <thead>
             <tr>

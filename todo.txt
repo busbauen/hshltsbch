@@ -3,6 +3,8 @@ bugs:
 - OK / Fehlermeldungen schöner machen
 - auf einnahmen oder ausgaben only checken
 - Kostenstelle Dropdown lädt nicht mehr wenn man schon einmal was eingegeben hat!?
+- auf dem laptop ist die leiste links zu breit
+- auf dem handy wird das menü angezeigt auch wenn man nicht eingeloggt ist 
 
 
 todo:
@@ -11,3 +13,7 @@ todo:
 - ansicht für monatliches/jährliches
 - aus 2017/2 einfach Februar machen
 - spacer bei #summary in month.html
+- css/js lokal nachladen
+- scrollbalken bei tab leiste oben
+- swipe am handy
+- Anzeige mit tanken

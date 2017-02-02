@@ -10,7 +10,7 @@ pip install flask<br>
 pip install pyoo <br>
 
 #deploying with uwsgi
-apt-get install build-essential python-dev
+apt-get install build-essential python-dev nginx
 pip install uwsgi
 
 #uwsgi.ini
@@ -47,3 +47,17 @@ WantedBy=multi-user.target
 
 systemctl daemon-reload
 systemctl start hshltsbch
+
+#cat /etc/nginx/sites-enabled/hshltsbch 
+server 
+{
+    listen          80;
+    server_name     localhost;
+    charset         utf-8;
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass 127.0.0.1:3031;
+    }
+}
+

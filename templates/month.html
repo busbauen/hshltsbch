@@ -11,59 +11,59 @@
 </div>
 
 <div id="ausgaben">
-    <h5>Ausgaben {{ month }}</h5>
-    <table class="bordered highlight col s12">
-        <thead>
-            <tr>
-                <th data-field="datum">Datum</th>
-                <th data-field="kategorie">Kategorie</th>
-                <th data-field="betrag">Betrag</th>
-                <th data-field="kommentar">Kommentar</th>
-            </tr>
-        </thead>
+    <h5>Ausgaben {{ month_name }} <h5>
+                <table class="bordered highlight col s12">
+                    <thead>
+                        <tr>
+                            <th data-field="datum">Datum</th>
+                            <th data-field="kategorie">Kategorie</th>
+                            <th data-field="betrag">Betrag</th>
+                            <th data-field="kommentar">Kommentar</th>
+                        </tr>
+                    </thead>
 
-        <tbody>
-            {% for expense in expenses %}
-            <tr>
-                <td>{{ expense[0] }}</td>
-                <td>{{ expense[1] }}</td>
-                <td>{{ expense[2] }}</td>
-                <td>{{ expense[3] }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <h5>Summe: {{ month_total_out }}</h5>
+                    <tbody>
+                        {% for expense in expenses %}
+                        <tr>
+                            <td>{{ expense[0] }}</td>
+                            <td>{{ expense[1] }}</td>
+                            <td>{{ expense[2] }}</td>
+                            <td>{{ expense[3] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <h5 style="margin-top: 2em">Summe: {{ month_total_out }}</h5>
 </div>
 
 <div id="einnahmen">
-    <h5>Einnahmen für {{ month }}</h5>
-    <table class="bordered highlight">
-        <thead>
-            <tr>
-                <th data-field="datum">Datum</th>
-                <th data-field="kategorie">Kategorie</th>
-                <th data-field="betrag">Betrag</th>
-                <th data-field="kommentar">Kommentar</th>
-            </tr>
-        </thead>
+    <h5>Einnahmen {{ month_name }} <h5>
+                <table class="bordered highlight">
+                    <thead>
+                        <tr>
+                            <th data-field="datum">Datum</th>
+                            <th data-field="kategorie">Kategorie</th>
+                            <th data-field="betrag">Betrag</th>
+                            <th data-field="kommentar">Kommentar</th>
+                        </tr>
+                    </thead>
 
-        <tbody>
-            {% for income in incomes %}
-            <tr>
-                <td>{{ income[0] }}</td>
-                <td>{{ income[1] }}</td>
-                <td>{{ income[2] }}</td>
-                <td>{{ income[3] }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <h5>Einnahmen: {{ month_total_in }}</h5>
+                    <tbody>
+                        {% for income in incomes %}
+                        <tr>
+                            <td>{{ income[0] }}</td>
+                            <td>{{ income[1] }}</td>
+                            <td>{{ income[2] }}</td>
+                            <td>{{ income[3] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <h5 style="margin-top: 2em">Einnahmen: {{ month_total_in }}</h5>
 </div>
 
 <div id="summary">
-    <h5>Ausgaben {{ month }}</h5>
+    <h5>Ausgaben {{ month_name }}</h5>
     <table class="col s6 bordered highlight">
         <thead>
             <tr>
@@ -82,7 +82,7 @@
         </tbody>
         {% endfor %}
     </table>
-    <h5>Einnahmen {{ month }}</h5>
+    <h5 style="margin-top: 2em">Einnahmen {{ month_name }}</h5>
     <table class="col s6 bordered highlight">
         <thead>
             <tr>
@@ -102,7 +102,7 @@
         {% endfor %}
     </table>
 
-    <h5>Total </h5>
+    <h5 style="margin-top: 2em">Total </h5>
     <table class="bordered highlight col s12">
         <thead>
             <tr>
@@ -158,4 +158,6 @@ Morris.Bar({
     labels: ['Series A', 'Series B']
 });
 </script>
+
+
 {% endblock  %}

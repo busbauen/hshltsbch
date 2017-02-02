@@ -5,6 +5,8 @@ import datetime
 
 import sqlite3 as sql
 
+months = ["Januar", "Febraur", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
+
 app = Flask(__name__)
 app.secret_key = 'yolo'
 app.config['USER'] = "admin"
@@ -86,9 +88,6 @@ def month(year, month):
     
     #ausgaben
     query = "SELECT strftime('%%d.%%m.%%Y',erstellt), name, printf('%%.02f', betrag), kommentar  FROM eintrag INNER JOIN kostenstelle ON kostenstelle.id = eintrag.kostenstelle_id  WHERE strftime('%%m', erstellt) = '%02d' AND strftime('%%Y', erstellt) = '%d' AND abschreibung='tag' AND kostenart='ausgaben'" % (month, year)
-    
-    #alles fuer den monat, auch jährliches
-    query = "SELECT strftime('%%d.%%m.%%Y',erstellt), name, printf('%%.02f', betrag), kommentar  FROM eintrag INNER JOIN kostenstelle ON kostenstelle.id = eintrag.kostenstelle_id  WHERE strftime('%%m', erstellt) = '%02d' AND strftime('%%Y', erstellt) = '%d' AND (abschreibung='tag' OR abschreibung='jahr') AND kostenart='ausgaben'" % (month, year)
     cur = get_db().cursor()
     cur.execute(query)
     expenses  = cur.fetchall()
@@ -102,9 +101,6 @@ def month(year, month):
     
     #summe ausgaben kategorie monat
     query = "SELECT name, printf('%%.02f', sum(betrag)) AS summe FROM eintrag INNER JOIN kostenstelle ON kostenstelle.id = eintrag.kostenstelle_id  WHERE strftime('%%m', erstellt) = '%02d' AND strftime('%%Y', erstellt) = '%d' AND abschreibung='tag' AND kostenart='ausgaben' GROUP BY kostenstelle_id ORDER BY CAST(summe as REAL) DESC" % (month, year)
-    
-    #summe ausgaben auch jährliches
-    query = "SELECT name, printf('%%.02f', sum(betrag)) AS summe FROM eintrag INNER JOIN kostenstelle ON kostenstelle.id = eintrag.kostenstelle_id  WHERE strftime('%%m', erstellt) = '%02d' AND strftime('%%Y', erstellt) = '%d' AND (abschreibung='tag' OR abschreibung='jahr') AND kostenart='ausgaben' GROUP BY kostenstelle_id ORDER BY CAST(summe as REAL) DESC" % (month, year)
     cur.execute(query)
     month_summary_out = cur.fetchall()
 
@@ -121,13 +117,10 @@ def month(year, month):
   
     #total out monat
     query = "SELECT printf('%%.02f', sum(betrag)) FROM eintrag WHERE strftime('%%m', erstellt) = '%02d' AND strftime('%%Y', erstellt) = '%d' AND abschreibung='tag' AND kostenart='ausgaben'" % (month, year)
-    
-    #total out monat incl jährliches
-    query = "SELECT printf('%%.02f', sum(betrag)) FROM eintrag WHERE strftime('%%m', erstellt) = '%02d' AND strftime('%%Y', erstellt) = '%d' AND (abschreibung='tag' OR abschreibung='jahr') AND kostenart='ausgaben'" % (month, year)
     cur.execute(query)
     month_total_out = cur.fetchall()
 
-    return render_template("month.html", list_months_sidebar=list_months_sidebar, current_month=current_month, incomes=incomes, expenses=nice_expenses, year=year, month=month, month_summary_in=month_summary_in, month_summary_out = month_summary_out, month_total_in=round(float(month_total_in[0][0]),2), month_total_out=round(float(month_total_out[0][0]),2))
+    return render_template("month.html", list_months_sidebar=list_months_sidebar, current_month=current_month, incomes=incomes, expenses=nice_expenses, year=year, month=month, month_summary_in=month_summary_in, month_summary_out = month_summary_out, month_total_in=round(float(month_total_in[0][0]),2), month_total_out=round(float(month_total_out[0][0]),2), month_name=months[month-1])
 
 
 @app.route('/')
@@ -150,24 +143,19 @@ def index():
     expenses_month_dict = dict((k[0],k[1]) for k in expenses_month)
     
     #ausgaben pro jahr und monat
-    query="SELECT strftime('%Y', erstellt), strftime('%m', erstellt), printf('%.02f', sum(betrag)) from eintrag where kostenart='ausgaben' and (abschreibung='tag' OR abschreibung='jahr') group by strftime('%Y', erstellt),strftime('%m', erstellt)"
-    #mit järhlichem
-    query="SELECT strftime('%Y', erstellt), strftime('%m', erstellt), printf('%.02f', sum(betrag)) from eintrag where kostenart='ausgaben' and (abschreibung='tag' OR abschreibung='jahr') group by strftime('%Y', erstellt),strftime('%m', erstellt)"
+    query="SELECT strftime('%Y', erstellt), strftime('%m', erstellt), printf('%.02f', sum(betrag)) from eintrag where kostenart='ausgaben' and abschreibung='tag' and kommentar is not 'tanken'  group by strftime('%Y', erstellt),strftime('%m', erstellt)"
     cur.execute(query)
     expenses_day = cur.fetchall()
     
     #einnahmen pro jahr und monat
     query="SELECT strftime('%Y', erstellt), strftime('%m', erstellt), printf('%.02f', sum(betrag)) from eintrag where kostenart='einnahmen' and abschreibung='tag'  group by strftime('%Y', erstellt),strftime('%m', erstellt)"
-    #mit jährlichem
-    query="SELECT strftime('%Y', erstellt), strftime('%m', erstellt), printf('%.02f', sum(betrag)) from eintrag where kostenart='einnahmen' and (abschreibung='tag' OR abschreibung='jahr') group by strftime('%Y', erstellt),strftime('%m', erstellt)"
     cur.execute(query)
     income = cur.fetchall()
 
     stats = [] 
+    
     for i in range(0, len(expenses_day)):
-        #item = (income[i][0], income[i][1], expenses_year_dict[income[i][0]], expenses_month_dict[income[i][0]], expenses_day[i][2],None , income[i][2], None)
-        #ohne jährliches
-        item = (income[i][0], income[i][1], expenses_month_dict[income[i][0]], 0, expenses_day[i][2],None , income[i][2], None)
+        item = (income[i][0], months[int(income[i][1])-1], expenses_year_dict[income[i][0]], expenses_month_dict[income[i][0]], expenses_day[i][2],None , income[i][2], None)
         stats.append(list(item))
     
     for i in range(0, len(income)):

@@ -17,3 +17,6 @@ todo:
 - scrollbalken bei tab leiste oben
 - swipe am handy
 - Anzeige mit tanken
+- am handy betrag: ziffern feld only
+- ssl
+- js/css cachen

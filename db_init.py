@@ -26,7 +26,7 @@ FOREIGN KEY(kostenstelle_id) REFERENCES kostenstelle(id)
 con.execute(create_eintrag)
 con.commit()
 
-kategorien = ("Bildung", "Spielzeug", "Miete", "Urlaub", "Internet/Handy", "Sparen", "Haushalt", "Kleidung", "GEZ", "Friseur", "Apotheke/Arzt", "Gehalt", "Geburtstage & Weihnachten", "passives Einkommen", "Essen & Trinken", "Sport", "Versicherungen", "Freizeit", "Gehalt", "Auto", "Zinsen")
+kategorien = ("Bildung", "Spielzeug", "Miete", "Urlaub", "Internet/Handy", "Sparen", "Haushalt", "Kleidung", "GEZ", "Friseur", "Apotheke/Arzt", "Gehalt", "Geburtstage & Weihnachten", "passives Einkommen", "Essen & Trinken", "Sport", "Versicherungen", "Freizeit", "Auto", "Zinsen")
 
 for kat in kategorien:
     cur = con.cursor()

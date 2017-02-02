@@ -5,6 +5,9 @@ import datetime
 
 import sqlite3 as sql
 
+app.secret_key = 'yolo'
+app.config['USER'] = "admin"
+app.config['PASS'] = "admin"
 app = Flask(__name__)
 
 DATABASE = "hshltsbch.db"
@@ -168,8 +171,5 @@ def new():
 
 
 
-app.secret_key = 'yolo'
-app.config['USER'] = "admin"
-app.config['PASS'] = "admin"
 
 app.run(debug=True, host='0.0.0.0')

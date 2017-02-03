@@ -1,22 +1,23 @@
 bugs:
-- bei /new Input besser validieren
-- OK / Fehlermeldungen schöner machen
-- auf einnahmen oder ausgaben only checken
-- Kostenstelle Dropdown lädt nicht mehr wenn man schon einmal was eingegeben hat!?
-- auf dem laptop ist die leiste links zu breit
-- auf dem handy wird das menü angezeigt auch wenn man nicht eingeloggt ist 
+[] OK / Fehlermeldungen schöner machen
+[X] auf einnahmen oder ausgaben only checken
+[] Kostenstelle Dropdown lädt nicht mehr wenn man schon einmal was eingegeben hat!?
+[] auf dem laptop ist die leiste links zu breit
+[] auf dem handy wird das menü angezeigt auch wenn man nicht eingeloggt ist 
 
 
 todo:
-- graphs
-- average ausgaben über Zeitraum X
-- ansicht für monatliches/jährliches
-- aus 2017/2 einfach Februar machen
-- spacer bei #summary in month.html
-- css/js lokal nachladen
-- scrollbalken bei tab leiste oben
-- swipe am handy
-- Anzeige mit tanken
-- am handy betrag: ziffern feld only
-- ssl
-- js/css cachen
+[X] bei /new Input besser validieren
+[] graphs
+[] average ausgaben über Zeitraum X
+[X] ansicht für monatliches/jährliches
+[X] aus 2017/2 einfach Februar machen
+[X] spacer bei #summary in month.html
+[] css/js lokal nachladen
+[] scrollbalken bei tab leiste oben
+[] swipe am handy
+[] Anzeige mit tanken
+[] am handy betrag: ziffern feld only
+[] ssl
+[] js/css cachen
+[] ansicht: kategorie in drop down auswählen und dann historischen verlauf davon + avg

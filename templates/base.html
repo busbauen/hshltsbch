@@ -14,11 +14,11 @@
 
             <nav>
                 <div class="nav-wrapper blue lighten-1">
-                    <a href="#!" class="brand-logo center">hshltsbch</a>
+                    <a href="/" class="brand-logo center">hshltsbch</a>
                     <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
                     {% if session.logged_in  %}
-                    <ul class="side-nav fixed" id="mobile-demo">
-                        <ul class="section table-of-contents" style="position:relative;top:50%;transform:translateY(-50%);">
+                    <ul class="side-nav fixed" style="witdh=400em" id="mobile-demo">
+                        <ul class="section table-of-contents" style="position:relative;top:50%;transform:translateY(-50%)">
                             <li><a href="/">Übersicht</a></li>
                             <li><a href="/month/{{ current_month  }} ">Aktueller Monat</a></li>
                             <li><a href="/fix ">Fixkosten</a></li>
@@ -45,7 +45,11 @@
         <!--Import jQuery before materialize.js-->
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script type="text/javascript" src="/static/js/materialize.min.js"></script>
-        <script> $(".button-collapse").sideNav();</script>
+        <script> $(".button-collapse").sideNav({
+
+menuWidth: 250
+        });
+        </script>
 
 
     </body>

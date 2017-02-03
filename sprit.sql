@@ -24,4 +24,7 @@ INSERT INTO eintrag (erstellt, kostenart, betrag, kostenstelle_id, kommentar, ab
 
 #den brauchts
 INSERT INTO eintrag (erstellt, kostenart, betrag, kostenstelle_id, kommentar, abschreibung) VALUES ('2016-01-01 10:00:00', "einnahmen",0 ,1 , "den brauchts für das jahr", "jahr");
+INSERT INTO eintrag (erstellt, kostenart, betrag, kostenstelle_id, kommentar, abschreibung) VALUES ('2016-01-01 10:00:00', "ausgaben",0 ,1 , "den brauchts für das jahr", "jahr");
+INSERT INTO eintrag (erstellt, kostenart, betrag, kostenstelle_id, kommentar, abschreibung) VALUES ('2016-01-01 10:00:00', "einnahmen",0 ,1 , "den brauchts für das jahr", "tag");
+INSERT INTO eintrag (erstellt, kostenart, betrag, kostenstelle_id, kommentar, abschreibung) VALUES ('2016-01-01 10:00:00', "ausgaben",0 ,1 , "den brauchts für das jahr", "tag")
 

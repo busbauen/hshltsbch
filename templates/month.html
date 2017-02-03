@@ -11,60 +11,63 @@
 </div>
 
 <div id="ausgaben">
-    <h5>Ausgaben {{ month_name }} <h5>
-                <table class="bordered highlight col s12">
-                    <thead>
-                        <tr>
-                            <th data-field="datum">Datum</th>
-                            <th data-field="kategorie">Kategorie</th>
-                            <th data-field="betrag">Betrag</th>
-                            <th data-field="kommentar">Kommentar</th>
-                        </tr>
-                    </thead>
+    <h5>Ausgaben {{ month_name }} </h5>
+    <table class="bordered highlight ">
+        <thead>
+            <tr>
+                <th data-field="datum">Datum</th>
+                <th data-field="kategorie">Kategorie</th>
+                <th data-field="betrag">Betrag</th>
+                <th data-field="kommentar">Kommentar</th>
+            </tr>
+        </thead>
 
-                    <tbody>
-                        {% for expense in expenses %}
-                        <tr>
-                            <td>{{ expense[0] }}</td>
-                            <td>{{ expense[1] }}</td>
-                            <td>{{ expense[2] }}</td>
-                            <td>{{ expense[3] }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                <h5 style="margin-top: 2em">Summe: {{ month_total_out }}</h5>
+        <tbody>
+            {% for expense in expenses %}
+            <tr>
+                <td>{{ expense[0] }}</td>
+                <td>{{ expense[1] }}</td>
+                <td>{{ expense[2] }}</td>
+                <td>{{ expense[3] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h5 style="margin-top: 1em">Summe: {{ month_total_out }}</h5>
+    <div style="" id="chart_expenses"></div> 
 </div>
 
 <div id="einnahmen">
-    <h5>Einnahmen {{ month_name }} <h5>
-                <table class="bordered highlight">
-                    <thead>
-                        <tr>
-                            <th data-field="datum">Datum</th>
-                            <th data-field="kategorie">Kategorie</th>
-                            <th data-field="betrag">Betrag</th>
-                            <th data-field="kommentar">Kommentar</th>
-                        </tr>
-                    </thead>
+    <h5>Einnahmen {{ month_name }} </h5>
+    <table class="bordered highlight">
+        <thead>
+            <tr>
+                <th data-field="datum">Datum</th>
+                <th data-field="kategorie">Kategorie</th>
+                <th data-field="betrag">Betrag</th>
+                <th data-field="kommentar">Kommentar</th>
+            </tr>
+        </thead>
 
-                    <tbody>
-                        {% for income in incomes %}
-                        <tr>
-                            <td>{{ income[0] }}</td>
-                            <td>{{ income[1] }}</td>
-                            <td>{{ income[2] }}</td>
-                            <td>{{ income[3] }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                <h5 style="margin-top: 2em">Einnahmen: {{ month_total_in }}</h5>
+        <tbody>
+            {% for income in incomes %}
+            <tr>
+                <td>{{ income[0] }}</td>
+                <td>{{ income[1] }}</td>
+                <td>{{ income[2] }}</td>
+                <td>{{ income[3] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h5 style="margin-top: 2em">Einnahmen: {{ month_total_in }}</h5>
+    <div style="" id="chart_income"></div>
 </div>
+
 
 <div id="summary">
     <h5>Ausgaben {{ month_name }}</h5>
-    <table class="col s6 bordered highlight">
+    <table class="bordered highlight">
         <thead>
             <tr>
                 <th data-field="kategorie">Kategorie</th>
@@ -83,7 +86,7 @@
         {% endfor %}
     </table>
     <h5 style="margin-top: 2em">Einnahmen {{ month_name }}</h5>
-    <table class="col s6 bordered highlight">
+    <table class="bordered highlight">
         <thead>
             <tr>
                 <th data-field="kategorie">Kategorie</th>
@@ -121,43 +124,77 @@
             </tr>
         </tbody>
     </table>
+    <br>
+    <br>
+    <div style="width: 900px; height: 500px;"  id="chart_total"></div>  
 </div>
 
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+google.charts.load('current', {'packages':['corechart', 'bar']});
+google.charts.setOnLoadCallback(drawStuff_Total);
+google.charts.setOnLoadCallback(drawChart_income);
+google.charts.setOnLoadCallback(drawChart_expenses);
+function drawChart_income() {
 
-<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
-<script src="http://cdn.oesmith.co.uk/morris-0.4.1.min.js"></script>
+    var data = google.visualization.arrayToDataTable([
+            ['Kategorie', 'Einnahmen'],
+            {% for s in month_summary_in %}
+            ['{{ s[0]|safe }} ', {{ s[1] }}],
+            {% endfor %}
+    ]);
 
-<!-- <div id="summary_ausgaben"></div> -->
+    var options = {
+        title: 'Einnahmen',
+        width: 700,
+        height: 700,
+        is3D: true
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('chart_income'));
+
+    chart.draw(data, options);
+}
+
+function drawChart_expenses() {
+
+    var data = google.visualization.arrayToDataTable([
+            ['Kategorie', 'Ausgaben'],
+            {% for s in month_summary_out %}
+            ['{{ s[0]|safe }} ', {{ s[1] }}],
+            {% endfor %}
+    ]);
+
+    var options = {
+        title: 'Ausgaben',
+        width: 500,
+        height: 500,
+        is3D: true
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('chart_expenses'));
+
+    chart.draw(data, options);
+}
 
 
+function drawStuff_Total() {
+    var data = new google.visualization.arrayToDataTable([
+            ['Total', 'Einnahmen', 'Ausgaben', 'Saldo'  ],
+            {% set saldo = month_total_in - month_total_out %}
+            ['{{ month_name }}', {{ month_total_in }}, {{  month_total_out }}, {{  saldo|round(2) }} ]
+    ]);
 
-<script>
-Morris.Donut({
-    element: 'summary_ausgaben',
-    data: [
-    {% for a in month_summary_out %} 
-    {label: "{{ a[0]|safe }}" , value:  {{ a[1] }} },
-    {% endfor %}
-    ]
-});
+    var options = {
+        chart: {
+            subtitle: 'Vergleich Einnahmen/Ausgaben' },
+        width: 700,
+        height: 500,
+        bar: { groupWidth: "90%" }
+    };
+
+    var chart = new google.charts.Bar(document.getElementById('chart_total'));
+    chart.draw(data, options)
+};
 </script>
-
-<!--<div id="bar-example"></div>  -->
-
-<script>
-Morris.Bar({
-    element: 'bar-example',
-    resize: 'true',
-    data: [
-    { y: '2006', a: 291, b: 1138 },
-    { y: '2006', a: 900, b: 1138 },
-    ],
-    xkey: 'y',
-    ykeys: ['a', 'b'],
-    labels: ['Series A', 'Series B']
-});
-</script>
-
-
 {% endblock  %}

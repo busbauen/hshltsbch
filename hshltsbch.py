@@ -42,6 +42,7 @@ def get_current_month():
     return "%d/%02d" % (now.year, now.month)
 
 
+
 @app.route('/fix')
 def fix():
     list_months_sidebar = get_all_months()
@@ -173,21 +174,33 @@ def new():
 
     if request.method == 'POST':
         if request.form.get('kostenart') and  request.form.get('kostenstelle') and request.form.get('betrag') and request.form.get('abschreibung') :
+            kommentar = request.form.get('kommentar')
             erstellt = request.form.get('erstellt')
             kostenart = request.form.get('kostenart')
+            if kostenart not in ['einnahmen', 'ausgaben']:
+                flash("Falsche Kostenart", "orange")
+                return render_template('new.html', list_months_sidebar=list_months_sidebar, current_month=current_month )
+
             kostenstelle = request.form.get('kostenstelle')
-            betrag = float(request.form.get('betrag').replace(',','.'))
+            try:
+                betrag = float(request.form.get('betrag').replace(',','.'))
+            except:
+                flash("Betrag ist keine Zahl", "orange")
+                return render_template('new.html', list_months_sidebar=list_months_sidebar, current_month=current_month )
+
             if betrag < 0:
                 betrag = betrag *-1
-            kommentar = request.form.get('kommentar')
             abschreibung = request.form.get('abschreibung')
+            if abschreibung not in ['tag', 'jahr', 'monat']:
+                flash("Falsche Abschreibung", "orange")
+                return render_template('new.html', list_months_sidebar=list_months_sidebar, current_month=current_month )
 
             con = get_db()
             cur = con.cursor()
             cur.execute("SELECT id from kostenstelle where name = (?)", (kostenstelle,))
             row = cur.fetchone()
             if row == None:
-                flash('Die Kostenstelle gibt es nicht!', 'red')
+                flash('Die Kostenstelle gibt es nicht!', 'orange')
                 return render_template('new.html', list_months_sidebar=list_months_sidebar, current_month=current_month)
             kostenstelle_id = row[0]
             cur.execute("INSERT INTO eintrag (erstellt, kostenart, betrag, kostenstelle_id, kommentar, abschreibung) VALUES (?,?,?,?,?,?)" , (erstellt + ' 10:00:00', kostenart, betrag, kostenstelle_id, kommentar, abschreibung))
@@ -196,7 +209,7 @@ def new():
             return render_template('new.html', list_months_sidebar=list_months_sidebar, current_month=current_month )
         else:
             flash('Alles ausfüllen!', 'red')
-            return render_template('new.html')
+            return render_template('new.html', list_months_sidebar=list_months_sidebar, current_month=current_month )
             
     cur = get_db().cursor()
     cur.execute("SELECT name from kostenstelle")

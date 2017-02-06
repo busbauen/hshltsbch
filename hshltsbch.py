@@ -5,7 +5,7 @@ import datetime
 
 import sqlite3 as sql
 
-months = ["Januar", "Febraur", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
+months = ["Januar", "Febraur", u"März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
 
 app = Flask(__name__)
 app.secret_key = 'yolo'

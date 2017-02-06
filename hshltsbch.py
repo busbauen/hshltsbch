@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# coding: utf8
+
 from flask import Flask, render_template, request, flash, session, url_for, redirect
 import functools
 import datetime

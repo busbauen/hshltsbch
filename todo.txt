@@ -21,3 +21,5 @@ todo:
 [] ssl
 [] js/css cachen
 [] ansicht: kategorie in drop down auswählen und dann historischen verlauf davon + avg
+[] tab auswahl bei new
+[] AOK Beitrag ändern

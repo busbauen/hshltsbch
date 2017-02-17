@@ -1,11 +1,13 @@
 #!/usr/bin/env python
+# coding: utf8
+
 from flask import Flask, render_template, request, flash, session, url_for, redirect
 import functools
 import datetime
 
 import sqlite3 as sql
 
-months = ["Januar", "Febraur", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
+months = ["Januar", "Febraur", u"März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
 
 app = Flask(__name__)
 app.secret_key = 'yolo'
@@ -218,5 +220,5 @@ def new():
 
 
 
-
-app.run(debug=True, host='0.0.0.0')
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')

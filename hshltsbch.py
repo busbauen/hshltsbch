@@ -3,7 +3,9 @@
 
 from flask import Flask, render_template, request, flash, session, url_for, redirect
 import functools
-import datetime
+import datetime, sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 import sqlite3 as sql
 

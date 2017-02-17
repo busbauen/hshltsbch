@@ -173,29 +173,34 @@ def index():
 def new():
     list_months_sidebar = get_all_months()
     current_month = get_current_month()
+    
+    #autocoomplete kategorien
+    cur = get_db().cursor()
+    cur.execute("SELECT name from kostenstelle")
+    kostenstellen = cur.fetchall()
 
     if request.method == 'POST':
         if request.form.get('kostenart') and  request.form.get('kostenstelle') and request.form.get('betrag') and request.form.get('abschreibung') :
             kommentar = request.form.get('kommentar')
             erstellt = request.form.get('erstellt')
-            kostenart = request.form.get('kostenart')
+            kostenart = request.form.get('kostenart').strip()
             if kostenart not in ['einnahmen', 'ausgaben']:
                 flash("Falsche Kostenart", "orange")
-                return render_template('new.html', list_months_sidebar=list_months_sidebar, current_month=current_month )
+                return render_template('new.html', list_months_sidebar=list_months_sidebar, current_month=current_month,kostenstellen=kostenstellen )
 
-            kostenstelle = request.form.get('kostenstelle')
+            kostenstelle = request.form.get('kostenstelle').strip()
             try:
                 betrag = float(request.form.get('betrag').replace(',','.'))
             except:
                 flash("Betrag ist keine Zahl", "orange")
-                return render_template('new.html', list_months_sidebar=list_months_sidebar, current_month=current_month )
+                return render_template('new.html', list_months_sidebar=list_months_sidebar, current_month=current_month, kostenstellen=kostenstellen )
 
             if betrag < 0:
                 betrag = betrag *-1
             abschreibung = request.form.get('abschreibung')
             if abschreibung not in ['tag', 'jahr', 'monat']:
                 flash("Falsche Abschreibung", "orange")
-                return render_template('new.html', list_months_sidebar=list_months_sidebar, current_month=current_month )
+                return render_template('new.html', list_months_sidebar=list_months_sidebar, current_month=current_month , kostenstellen=kostenstellen)
 
             con = get_db()
             cur = con.cursor()
@@ -203,22 +208,19 @@ def new():
             row = cur.fetchone()
             if row == None:
                 flash('Die Kostenstelle gibt es nicht!', 'orange')
-                return render_template('new.html', list_months_sidebar=list_months_sidebar, current_month=current_month)
+                return render_template('new.html', list_months_sidebar=list_months_sidebar, current_month=current_month,kostenstellen=kostenstellen)
             kostenstelle_id = row[0]
             cur.execute("INSERT INTO eintrag (erstellt, kostenart, betrag, kostenstelle_id, kommentar, abschreibung) VALUES (?,?,?,?,?,?)" , (erstellt + ' 10:00:00', kostenart, betrag, kostenstelle_id, kommentar, abschreibung))
             con.commit()
             flash('OK', 'green')
-            return render_template('new.html', list_months_sidebar=list_months_sidebar, current_month=current_month )
+            return render_template('new.html', list_months_sidebar=list_months_sidebar, current_month=current_month,kostenstellen=kostenstellen )
         else:
             flash('Alles ausfüllen!', 'red')
-            return render_template('new.html', list_months_sidebar=list_months_sidebar, current_month=current_month )
+            return render_template('new.html', list_months_sidebar=list_months_sidebar, current_month=current_month, kostenstellen=kostenstellen )
             
-    cur = get_db().cursor()
-    cur.execute("SELECT name from kostenstelle")
-    kostenstellen = cur.fetchall()
     return render_template('new.html',  list_months_sidebar=list_months_sidebar, current_month=current_month, kostenstellen=kostenstellen)
 
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(debug=True,host='0.0.0.0')

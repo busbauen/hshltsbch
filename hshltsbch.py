@@ -4,18 +4,18 @@
 from flask import Flask, render_template, request, flash, session, url_for, redirect
 import functools
 import datetime,sys
-#from imp import reload
-#reload(sys)
-#sys.setdefaultencoding('utf-8')
+from imp import reload
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 import sqlite3 as sql
 
 months = ["Januar", "Febraur", u"März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
 
 app = Flask(__name__)
-app.secret_key = 'yolo'
-app.config['USER'] = "admin"
-app.config['PASS'] = "admin"
+app.secret_key = 'yolo23f892498242f'
+app.config['USER'] = "christian"
+app.config['PASS'] = "realdonalddump"
 
 DATABASE = "hshltsbch.db"
 
@@ -149,7 +149,7 @@ def index():
     expenses_month_dict = dict((k[0],k[1]) for k in expenses_month)
     
     #ausgaben pro jahr und monat
-    query="SELECT strftime('%Y', erstellt), strftime('%m', erstellt), printf('%.02f', sum(betrag)) from eintrag where kostenart='ausgaben' and abschreibung='tag' and kommentar is not 'tanken'  group by strftime('%Y', erstellt),strftime('%m', erstellt)"
+    query="SELECT strftime('%Y', erstellt), strftime('%m', erstellt), printf('%.02f', sum(betrag)) from eintrag where kostenart='ausgaben' and abschreibung='tag' group by strftime('%Y', erstellt),strftime('%m', erstellt)"
     cur.execute(query)
     expenses_day = cur.fetchall()
     
@@ -226,4 +226,4 @@ def new():
 
 
 if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0')
+    app.run(host='0.0.0.0')

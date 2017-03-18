@@ -13,7 +13,7 @@
 
 <form action="/new" method="post">
     <label>Kostenstelle</label> <input required type="text" name="kostenstelle" id="kostenstelle" placeholder="Kostenstelle">
-    <label>Betrag</label><input type="number" name="betrag" required placeholder="Betrag">
+    <label>Betrag</label><input type="number" step="0.01"  name="betrag" required placeholder="Betrag">
     <label>Kommentar</label><input type="text" name="kommentar" id="kommentar" placeholder="Kommentar">
     <label>Erstellt</label> <input type="date" class="datepicker" required name="erstellt" id="erstellt" placeholder="Erstellt">
     <label>Kostenart</label><input type="text" required name="kostenart" id="kostenart" placeholder="Kostenart" value="ausgaben">

@@ -1,12 +1,12 @@
 #!/usr/bin/env python
-# coding: utf8
+# -*- coding: utf-8 -*-
 
 from flask import Flask, render_template, request, flash, session, url_for, redirect
 import functools
 import datetime,sys
 from imp import reload
-reload(sys)
-sys.setdefaultencoding('utf-8')
+#reload(sys)
+#sys.setdefaultencoding('utf-8')
 
 import sqlite3 as sql
 
@@ -149,7 +149,7 @@ def index():
     expenses_month_dict = dict((k[0],k[1]) for k in expenses_month)
     
     #ausgaben pro jahr und monat
-    query="SELECT strftime('%Y', erstellt), strftime('%m', erstellt), printf('%.02f', sum(betrag)) from eintrag where kostenart='ausgaben' and abschreibung='tag' group by strftime('%Y', erstellt),strftime('%m', erstellt)"
+    query="SELECT strftime('%Y', erstellt), strftime('%m', erstellt), printf('%.02f', sum(betrag)) from eintrag where kostenart='ausgaben' and abschreibung='tag' and kostenstelle_id != (select id from kostenstelle where name='Sparen') group by strftime('%Y', erstellt),strftime('%m', erstellt)"
     cur.execute(query)
     expenses_day = cur.fetchall()
     
@@ -160,16 +160,32 @@ def index():
 
     stats = [] 
     
-    for i in range(0, len(expenses_day)):
-        item = (income[i][0], months[int(income[i][1])-1], expenses_year_dict[income[i][0]], expenses_month_dict[income[i][0]], expenses_day[i][2],None , income[i][2], None)
+    for i in range(len(expenses_day)):
+        #fix no income in this month
+        try:
+            income_mo =  income[i][2]
+        except IndexError:
+            income_mo = 0.00
+            pass
+        
+        item = (expenses_day[i][0], months[int(expenses_day[i][1])-1], expenses_year_dict[expenses_day[i][0]], expenses_month_dict[expenses_day[i][0]], expenses_day[i][2],None , income_mo, None)
         stats.append(list(item))
     
-    for i in range(0, len(income)):
+    for i in range(0, len(expenses_day)):
         stats[i][5] = round(float(stats[i][2]) +float(stats[i][3]) + float(stats[i][4]),2)
         stats[i][7] = round(float(stats[i][6]) - float(stats[i][5]),2)
 
- 
-    return render_template('summary.html', list_months_sidebar=list_months_sidebar, current_month=current_month, stats=stats)
+    #average in/out
+    avg_out = []
+    avg_in = []
+    for month in stats:
+        avg_out.append(float(month[5]))
+        avg_in.append(float(month[6]))
+
+    avg_out = round(sum(avg_out)/len(avg_out),2)
+    avg_in = round(sum(avg_in)/len(avg_in),2)
+    
+    return render_template('summary.html', list_months_sidebar=list_months_sidebar, current_month=current_month, stats=stats, avg_in=avg_in, avg_out=avg_out)
 
 @app.route('/new', methods = [ 'POST', 'GET'])
 @login_required
@@ -226,4 +242,4 @@ def new():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(debug=True,host='0.0.0.0')

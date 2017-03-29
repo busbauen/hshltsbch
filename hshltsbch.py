@@ -14,8 +14,8 @@ months = ["Januar", "Febraur", u"März", "April", "Mai", "Juni", "Juli", "August
 
 app = Flask(__name__)
 app.secret_key = 'yolo23f892498242f'
-app.config['USER'] = "christian"
-app.config['PASS'] = "realdonalddump"
+app.config['USER'] = "test"
+app.config['PASS'] = "test"
 
 DATABASE = "hshltsbch.db"
 

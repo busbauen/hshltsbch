@@ -5,6 +5,7 @@ from flask import Flask, render_template, request, flash, session, url_for, redi
 import functools
 import datetime,sys
 from imp import reload
+import settings
 #reload(sys)
 #sys.setdefaultencoding('utf-8')
 
@@ -14,8 +15,8 @@ months = ["Januar", "Febraur", u"März", "April", "Mai", "Juni", "Juli", "August
 
 app = Flask(__name__)
 app.secret_key = 'yolo23f892498242f'
-app.config['USER'] = "test"
-app.config['PASS'] = "test"
+app.config['USER'] = settings.user
+app.config['PASS'] = settings.pw
 
 DATABASE = "hshltsbch.db"
 
@@ -242,4 +243,5 @@ def new():
 
 
 if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0')
+    app.debug = settings.debug
+    app.run(host='0.0.0.0')

@@ -9,17 +9,19 @@ bugs:
 todo:
 [X] bei /new Input besser validieren
 [] graphs
-[] average ausgaben über Zeitraum X
+[X] average ausgaben über Zeitraum X
 [X] ansicht für monatliches/jährliches
 [X] aus 2017/2 einfach Februar machen
 [X] spacer bei #summary in month.html
-[] css/js lokal nachladen
+[X] css/js lokal nachladen
 [] scrollbalken bei tab leiste oben
 [] swipe am handy
 [] Anzeige mit tanken
-[] am handy betrag: ziffern feld only
-[] ssl
+[X] am handy betrag: ziffern feld only
+[X] ssl
+[] ssl: oscp stapling
 [] js/css cachen
 [] ansicht: kategorie in drop down auswählen und dann historischen verlauf davon + avg
 [] tab auswahl bei new
-[] AOK Beitrag ändern
+[X] AOK Beitrag ändern
+[] media markt gutschein: kategorie in db ändern (von Sparen auf spielzeug)

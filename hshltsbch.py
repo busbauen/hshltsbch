@@ -11,14 +11,14 @@ import settings
 
 import sqlite3 as sql
 
+DATABASE = "hshltsbch.db"
 months = ["Januar", "Febraur", u"März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
 
 app = Flask(__name__)
-app.secret_key = 'yolo23f892498242f'
 app.config['USER'] = settings.user
 app.config['PASS'] = settings.pw
-
-DATABASE = "hshltsbch.db"
+app.debug = settings.debug
+app.secret_key = settings.key
 
 def get_db():
     db = sql.connect(DATABASE)
@@ -78,7 +78,7 @@ def login():
                session['logged_in'] = True
                return redirect('/')
         else:
-            flash('Nö')
+            flash('Nö', 'red')
     return render_template('login.html')
 
 @app.route('/logout')
@@ -243,5 +243,4 @@ def new():
 
 
 if __name__ == '__main__':
-    app.debug = settings.debug
     app.run(host='0.0.0.0')

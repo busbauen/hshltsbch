@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block body %}
+
+{% for category, message in  get_flashed_messages(with_categories=true) %}
+{% if message %}
+	                    <div id="card-alert" class="card {{ category }}">
+                      <div class="card-content white-text">
+                          <center> <p >  {{ message }} </p> </center>
+                      </div>
+</div>
+{% endif %}
+{% endfor %}
+
+<form action="/new" method="post">
+    <label>Kostenstelle</label> <input required type="text" name="kostenstelle" id="kostenstelle" placeholder="Kostenstelle">
+    <label>Betrag</label><input type="number" step="0.01"  name="betrag" required placeholder="Betrag">
+    <label>Kommentar</label><input type="text" name="kommentar" id="kommentar" placeholder="Kommentar">
+    <label>Erstellt</label> <input type="date" class="datepicker" required name="erstellt" id="erstellt" placeholder="Erstellt">
+    <label>Kostenart</label><input type="text" required name="kostenart" id="kostenart" placeholder="Kostenart" value="ausgaben">
+    <label>Abschreibung</label><input type="text" required name="abschreibung" id="abschreibung" placeholder="Abschreibung" value="tag">
+
+    <input type="submit" class="btn blue lighten-1" name="submit" value="Add">
+</form>
+
+
+<link href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
+
+
+<script>
+$(document).ready( function() {
+    var now = new Date();
+    var month = (now.getMonth() + 1);               
+    var day = now.getDate();
+    if(month < 10) 
+        month = "0" + month;
+    if(day < 10) 
+        day = "0" + day;
+    var today = now.getFullYear() + '-' + month + '-' + day;
+    $('#erstellt').val(today);
+});
+
+var kostenstellen = [ {% for item in kostenstellen %} '{{ item[0]|safe }}', {% endfor %}];
+$("#kostenstelle").autocomplete({source:kostenstellen});
+
+var kostenarten = ['ausgaben', 'einnahmen'];
+$("#kostenart").autocomplete({source:kostenarten});
+
+var abschreibung = ['jahr','monat','tag'];
+$("#abschreibung").autocomplete({source:abschreibung});
+
+var kommentar = ['tanken','blablacar'];
+$("#kommentar").autocomplete({source:kommentar});
+</script>
+
+{% endblock %}

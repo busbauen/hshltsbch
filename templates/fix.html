@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block body  %}
+
+<div class="row">
+    <div class="col s12 ">
+        <ul class="tabs">
+            <li class="tab col s6 blue lighten-1"><a href="#year" class="white-text">Jährliches</a></li>
+            <li class="tab col s6 blue lighten-1"><a href="#month" class="white-text">Monatliches</a></li>
+        </ul>
+    </div>
+</div>
+
+<div id="year">
+    <h5>Jährliche Fixkosten 2017</h5>
+    <table class="bordered highlight col s12">
+        <thead>
+            <tr>
+                <th>Kategorie</th>
+                <th>Betrag</th>
+                <th>Kommentar</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for expense in year_fixes %}
+            <tr>
+                <td>{{ expense[0] }}</td>
+                <td>{{ expense[1] }}</td>
+                <td>{{ expense[2] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h5 style="margin-top: 1em">In Summe {{ year_summ }} und {{ year_avg }} pro Monat</h4>
+
+</div>
+
+<div id="month">
+    <h5>Monatliche Fixkosten 2017</h5>
+    <table class="bordered highlight col s12">
+        <thead>
+            <tr>
+                <th>Kategorie</th>
+                <th>Betrag</th>
+                <th>Kommentar</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for expense in month_fixes %}
+            <tr>
+                <td>{{ expense[0] }}</td>
+                <td>{{ expense[1] }}</td>
+                <td>{{ expense[2] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h5 style="margin-top: 1em">Summe: {{ month_sum }}</h5>
+</div>
+
+{% endblock  %}
+

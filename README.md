@@ -13,6 +13,7 @@ apt-get install build-essential python-dev nginx
 pip install uwsgi  
 
 ## uwsgi.ini 
+<pre>
 [uwsgi]  
 socket = 127.0.0.1:3031  
 chdir = /home/money/hshltsbch/  
@@ -23,9 +24,11 @@ callable = app
 wsgi-file = hshltsbch.py  
 uid = money  
 guid = money  
+</pre>
 
 
 ## /etc/systemd/system/hshltsbch.service  
+<pre>
 [Unit] 
 Description=Haushaltsbuch   
 After=syslog.target  
@@ -42,21 +45,23 @@ NotifyAccess=all
 
 [Install]  
 WantedBy=multi-user.target  
-
+</pre>
 
 systemctl daemon-reload  
 systemctl start hshltsbch  
 
 ## cat /etc/nginx/sites-enabled/hshltsbch 
+<pre>
 server  
 {  
     listen          80;  
     server_name     localhost;  
     charset         utf-8;  
-       
+  
     location / {  
         include uwsgi_params;  
         uwsgi_pass 127.0.0.1:3031;  
     }  
 } 
+</pre>
 

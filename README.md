@@ -1,38 +1,37 @@
-# hshltsbch
-# Installation:
+# hshltsbch - Installation
 
-apt-get install python-setuptools python-pip virtualenv sqlite3<br>
-virtualenv venv<br>
-source venv/bin/activate<br>
-pip install flask<br>
+apt-get install python-setuptools python-pip virtualenv sqlite3  
+virtualenv venv  
+source venv/bin/activate  
+pip install flask  
 
-#developing <br>
-pip install pyoo <br>
+## developing   
+pip install pyoo   
 
-#deploying with uwsgi
-apt-get install build-essential python-dev nginx
-pip install uwsgi
+## deploying with uwsgi
+apt-get install build-essential python-dev nginx  
+pip install uwsgi  
 
-#uwsgi.ini
-[uwsgi]
-socket = 127.0.0.1:3031
-chdir = /home/money/hshltsbch/
-processes = 1
-threads = 1
-stats = 127.0.0.1:9191
-callable = app
-wsgi-file = hshltsbch.py
-uid = money
-guid = money
+## uwsgi.ini 
+[uwsgi]  
+socket = 127.0.0.1:3031  
+chdir = /home/money/hshltsbch/  
+processes = 1  
+threads = 1  
+stats = 127.0.0.1:9191  
+callable = app  
+wsgi-file = hshltsbch.py  
+uid = money  
+guid = money  
 
 
-#/etc/systemd/system/hshltsbch.service 
-[Unit]
-Description=Haushaltsbuch 
-After=syslog.target
+## /etc/systemd/system/hshltsbch.service  
+[Unit] 
+Description=Haushaltsbuch   
+After=syslog.target  
 
-[Service]
-ExecStart=/usr/local/bin/uwsgi --ini /home/money/hshltsbch/uwsgi.ini
+[Service]  
+ExecStart=/usr/local/bin/uwsgi --ini /home/money/hshltsbch/uwsgi.ini  
 
 RuntimeDirectory=uwsgi
 Restart=always

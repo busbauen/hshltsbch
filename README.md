@@ -1,5 +1,5 @@
 # hshltsbch
-Installation: <br>  
+# Installation:
 
 apt-get install python-setuptools python-pip virtualenv sqlite3<br>
 virtualenv venv<br>

@@ -33,22 +33,22 @@ After=syslog.target
 [Service]  
 ExecStart=/usr/local/bin/uwsgi --ini /home/money/hshltsbch/uwsgi.ini  
 
-RuntimeDirectory=uwsgi
-Restart=always
-KillSignal=SIGQUIT
-Type=notify
-StandardError=syslog
-NotifyAccess=all
+RuntimeDirectory=uwsgi  
+Restart=always  
+KillSignal=SIGQUIT  
+Type=notify  
+StandardError=syslog  
+NotifyAccess=all  
 
-[Install]
-WantedBy=multi-user.target
+[Install]  
+WantedBy=multi-user.target  
 
 
-systemctl daemon-reload
-systemctl start hshltsbch
+systemctl daemon-reload  
+systemctl start hshltsbch  
 
-#cat /etc/nginx/sites-enabled/hshltsbch 
-server 
+## cat /etc/nginx/sites-enabled/hshltsbch 
+server
 {
     listen          80;
     server_name     localhost;

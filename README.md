@@ -48,15 +48,15 @@ systemctl daemon-reload
 systemctl start hshltsbch  
 
 ## cat /etc/nginx/sites-enabled/hshltsbch 
-server
-{
-    listen          80;
-    server_name     localhost;
-    charset         utf-8;
+server  
+{  
+    listen          80;  
+    server_name     localhost;  
+    charset         utf-8;  
 
-    location / {
-        include uwsgi_params;
-        uwsgi_pass 127.0.0.1:3031;
-    }
-}
+    location / {  
+        include uwsgi_params;  
+        uwsgi_pass 127.0.0.1:3031;  
+    }  
+} 
 

@@ -6,8 +6,8 @@ import functools
 import datetime,sys
 from imp import reload
 import settings
-#reload(sys)
-#sys.setdefaultencoding('utf-8')
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 import sqlite3 as sql
 
@@ -23,6 +23,10 @@ app.secret_key = settings.key
 def get_db():
     db = sql.connect(DATABASE)
     return db
+
+@app.before_request
+def make_session_ermanent():
+    session.permanent = True
 
 @app.teardown_appcontext
 def close_connection(exception):
@@ -73,7 +77,7 @@ def fix():
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST' and request.form.get('username') and request.form.get('password'):
-        if request.form.get('username') == app.config['USER'] and \
+        if request.form.get('username').strip().lower() == app.config['USER'].lower() and \
            request.form.get('password') == app.config['PASS']:
                session['logged_in'] = True
                return redirect('/')

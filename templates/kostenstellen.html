@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block body  %}
+
+<script type="text/javascript" src="/static/js/sorttable.js"></script>
+<div id="year">
+    <h5>Durchschnittliche Kosten/Einnahmen</h5>
+    <table class="bordered highlight col s12 sortable">
+        <thead>
+            <tr>
+                <th>Kostenstelle</th>
+                <th>Total in</th>
+                <th>AVG in</th>
+                <th>Total out</th>
+                <th>AVG out</th>
+                <th>AVG saldo</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for eintrag in list_kostenstellen %}
+            <tr>
+                <td>{{ eintrag['name'] }}</td>
+                <td>{{ eintrag['in']|round(2) }}</td>
+                <td>{{ eintrag['avg_in']|round(2) }}</td>
+                <td>{{ eintrag['out']|round(2) }}</td>
+                <td>{{ eintrag['avg_out']|round(2) }}</td>
+                <td>{{ eintrag['avg_saldo']|round(2) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h5 style="margin-top: 1em">In Summe {{ year_summ }} und {{ year_avg }} pro Monat</h4>
+
+</div>
+
+
+{% endblock  %}
+

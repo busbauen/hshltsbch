@@ -254,35 +254,35 @@ def kostenstellen():
     anzahl_monate = len(cur.fetchall())
 
     cur = get_db().cursor()
-    cur.execute("select kostenstelle_id, sum(betrag) from eintrag  where kostenart = 'einnahmen' group by kostenstelle_id")
+    cur.execute("select id,name from kostenstelle")
+    kostenstellen = cur.fetchall()
+    
+    cur = get_db().cursor()
+    cur.execute("select kostenstelle_id, sum(betrag) from eintrag  where kostenart = 'einnahmen' and erstellt > '2016-08-01 10:00:00' and abschreibung != 'monat' group by kostenstelle_id")
     einnahmen_pro_kostenstelle = dict(cur.fetchall())
 
     cur = get_db().cursor()
-    cur.execute("select kostenstelle_id, sum(betrag) from eintrag  where kostenart = 'ausgaben' group by kostenstelle_id")
+    cur.execute("select kostenstelle_id, sum(betrag) from eintrag  where kostenart = 'ausgaben' and erstellt > '2016-08-01 10:00:00' and abschreibung != 'monat' group by kostenstelle_id")
     ausgaben_pro_kostenstelle = dict(cur.fetchall())
 
-    print ausgaben_pro_kostenstelle
-    print einnahmen_pro_kostenstelle
-
-
-#das tut so nicht
-
     list_kostenstellen = []
-    for k_id in range(20):
-        if k_id in einnahmen_pro_kostenstelle:
-            kost = { 'id': k_id }
-            kost['sum_einnahmen'] = einnahmen_pro_kostenstelle[k_id]
+    for k in kostenstellen:
+        kost = { 'id': k[0], 'name': k[1], 'in': 0, 'out': 0 }
+        if k[0] in einnahmen_pro_kostenstelle:
+            kost['in'] =  einnahmen_pro_kostenstelle[k[0]]
 
-        if k_id in ausgaben_pro_kostenstelle:
-            if not kost:
-                kost = { 'id': k_id }
-            kost['sum_ausgaben'] = ausgaben_pro_kostenstelle[k_id]
-            
+        if k[0] in ausgaben_pro_kostenstelle:
+            kost['out'] = ausgaben_pro_kostenstelle[k[0]]
+
         list_kostenstellen.append(kost)
 
-    print list_kostenstellen
-    return "OK"
-    
+    for k in list_kostenstellen:
+        k['avg_in'] = k['in'] / anzahl_monate
+        k['avg_out'] = k['out'] / anzahl_monate
+        k['avg_saldo'] = k['avg_in'] - k['avg_out']
+
+
+    return render_template('kostenstellen.html', list_kostenstellen=list_kostenstellen)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

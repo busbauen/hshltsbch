@@ -187,6 +187,7 @@ def index():
         avg_out.append(float(month[5]))
         avg_in.append(float(month[6]))
 
+    print len(avg_out)
     avg_out = round(sum(avg_out)/len(avg_out),2)
     avg_in = round(sum(avg_in)/len(avg_in),2)
     
@@ -245,6 +246,43 @@ def new():
     return render_template('new.html',  list_months_sidebar=list_months_sidebar, current_month=current_month, kostenstellen=kostenstellen)
 
 
+@app.route("/kostenstellen")
+@login_required
+def kostenstellen():
+    cur = get_db().cursor()
+    cur.execute("select 1 from eintrag where erstellt > '2016-08-01 10:00:00' group by strftime('%Y', erstellt) ,strftime('%m', erstellt)")
+    anzahl_monate = len(cur.fetchall())
+
+    cur = get_db().cursor()
+    cur.execute("select kostenstelle_id, sum(betrag) from eintrag  where kostenart = 'einnahmen' group by kostenstelle_id")
+    einnahmen_pro_kostenstelle = dict(cur.fetchall())
+
+    cur = get_db().cursor()
+    cur.execute("select kostenstelle_id, sum(betrag) from eintrag  where kostenart = 'ausgaben' group by kostenstelle_id")
+    ausgaben_pro_kostenstelle = dict(cur.fetchall())
+
+    print ausgaben_pro_kostenstelle
+    print einnahmen_pro_kostenstelle
+
+
+#das tut so nicht
+
+    list_kostenstellen = []
+    for k_id in range(20):
+        if k_id in einnahmen_pro_kostenstelle:
+            kost = { 'id': k_id }
+            kost['sum_einnahmen'] = einnahmen_pro_kostenstelle[k_id]
+
+        if k_id in ausgaben_pro_kostenstelle:
+            if not kost:
+                kost = { 'id': k_id }
+            kost['sum_ausgaben'] = ausgaben_pro_kostenstelle[k_id]
+            
+        list_kostenstellen.append(kost)
+
+    print list_kostenstellen
+    return "OK"
+    
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

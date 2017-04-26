@@ -1,3 +1,4 @@
 Buch.ods
 hshltsbch.db
-settings
+settings.py
+*.pyc

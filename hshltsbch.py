@@ -21,7 +21,7 @@ app.config['PASS'] = settings.pw
 app.debug = settings.debug
 app.secret_key = settings.key
 bcrypt = Bcrypt(app)
-UPLOAD_FOLDER = '/tmp/tmp/'
+UPLOAD_FOLDER = '/tmp/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 

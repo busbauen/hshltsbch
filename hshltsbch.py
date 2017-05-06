@@ -21,6 +21,47 @@ app.config['PASS'] = settings.pw
 app.debug = settings.debug
 app.secret_key = settings.key
 bcrypt = Bcrypt(app)
+UPLOAD_FOLDER = '/tmp/tmp/'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+@app.route("/upload", methods=[ "POST", "GET" ])
+def upload():
+    if request.method == "POST":
+        if 'file' not in request.files:
+            return "no file uploaded"
+        file = request.files['file']
+        if file.filename == '':
+            return "no file selected"
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            from PIL import Image
+            import sys
+
+            import pyocr
+            import pyocr.builders
+
+            tools = pyocr.get_available_tools()
+            tool = tools[1]
+
+            txt = tool.image_to_string(Image.open(os.path.join(app.                 config['UPLOAD_FOLDER'], filename)), lang="deu", builder=pyocr.builders.            TextBuilder())
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            print(txt)
+            return txt[txt.find("SUMME"):].split("\n")[0]
+            #return "upload successfull"
+
+    return '''
+        <!doctype html>
+        <title>Upload new File</title>
+        <h1>Upload new File</h1>
+        <form method=post enctype=multipart/form-data>
+        <p><input type=file name=file accept="image/*" capture="camera">
+        <input type=submit value=Upload>
+        </form>
+   '''
+
+
 
 def get_db():
     db = sql.connect(DATABASE)

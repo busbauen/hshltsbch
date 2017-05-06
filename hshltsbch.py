@@ -125,7 +125,7 @@ def login():
                session['logged_in'] = True
                return redirect('/')
         else:
-            flash('Nöööööööööö', 'red')
+            flash('Nö', 'red')
     return render_template('login.html')
 
 @app.route('/logout')

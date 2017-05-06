@@ -5,6 +5,7 @@ from flask import Flask, render_template, request, flash, session, url_for, redi
 import functools
 import datetime,sys
 from imp import reload
+from flask_bcrypt import Bcrypt
 import settings
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -19,6 +20,7 @@ app.config['USER'] = settings.user
 app.config['PASS'] = settings.pw
 app.debug = settings.debug
 app.secret_key = settings.key
+bcrypt = Bcrypt(app)
 
 def get_db():
     db = sql.connect(DATABASE)
@@ -78,7 +80,7 @@ def fix():
 def login():
     if request.method == 'POST' and request.form.get('username') and request.form.get('password'):
         if request.form.get('username').strip().lower() == app.config['USER'].lower() and \
-           request.form.get('password') == app.config['PASS']:
+           bcrypt.check_password_hash(app.config['PASS'], request.form.get('password')):
                session['logged_in'] = True
                return redirect('/')
         else:
@@ -187,7 +189,6 @@ def index():
         avg_out.append(float(month[5]))
         avg_in.append(float(month[6]))
 
-    print len(avg_out)
     avg_out = round(sum(avg_out)/len(avg_out),2)
     avg_in = round(sum(avg_in)/len(avg_in),2)
     

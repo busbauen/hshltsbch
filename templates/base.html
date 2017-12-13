@@ -10,34 +10,40 @@
     </head>
 
     <body>
+        
         <div class="container">
+	<ul id="dropdown1" class="dropdown-content">
+          <li><a href="#!">one</a></li>
+          <li><a href="#!">two</a></li>
+          <li class="divider"></li>
+           <li><a href="#!">three</a></li>
+    </ul>
 
-            <nav>
-                <div class="nav-wrapper blue lighten-1">
-                    <a href="/" class="brand-logo center">hshltsbch</a>
-                    <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-                    {% if session.logged_in  %}
-                    <ul class="side-nav fixed" id="mobile-demo">
-                        <ul class="section table-of-contents" style="position:relative;top:50%;transform:translateY(-50%)">
-                            <li><a href="/">Übersicht</a></li>
-                            <li><a href="/month/{{ current_month  }} ">Aktueller Monat</a></li>
-                            <li><a href="/fix ">Fixkosten</a></li>
-                            <li><a href="/kostenstellen ">Kostenstellen</a></li>
-                            <li><a href="/new">Neuer Eintrag</a></li>
-                            <li><a href="/logout">Logout</a></li>
-                            <li><a>Vergangene Monate</a></li>
-                            {% for item in list_months_sidebar %}
-                            <li><a style="position:relative;left:5%" href="/month/{{  item[0] }}/{{ item[1] }}">{{  item[0] }} {{ item[1] }}</a></li> 
-                            {% endfor %}
-                            <li><a href="#">hide</a></li>
-                        </ul>
-                </div>
-                    </ul>
-                    {% endif %}
-            </nav>
+  <nav>
+    <div class="nav-wrapper blue lighten-1">
+      <a href="/" class="brand-logo">hshltsbch</a>
+      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="/new">Neuer Eintrag</a></li>
+        <li><a href="/month/{{ current_month }}">aktueller Monat</a></li>
+        <li><a href="/fix">Fixkosten</a></li>
+        <li><a href="/kostenstellen">Kostenstellen</a></li>
+        <li><a class="dropdown-button" href="#!" data-activates="dropdown1">vergangene Monate<i class="material-icons right">arrow_drop_down</i></a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+      <ul class="side-nav" id="mobile-demo">
+        <li><a href="/">Übersicht</a></li>
+        <li><a href="/new">Neuer Eintrag</a></li>
+        <li><a href="/month/{{ current_month }}">aktueller Monat</a></li>
+        <li><a href="/fix">Fixkosten</a></li>
+        <li><a href="/kostenstellen">Kostenstellen</a></li>
+        <li><a href="/logout">Logout</a></li>
+        <li><a href="#">hide</a></li>
+    </div>
+  </nav>
+
 
             {% block body %} {% endblock %}
-
             <br>
             <br>
         </div>
@@ -47,11 +53,12 @@
         <!--Import jQuery before materialize.js-->
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script type="text/javascript" src="/static/js/materialize.min.js"></script>
-        <script> $(".button-collapse").sideNav({
+        <script> 
 
-menuWidth: 250,
-    closeOnClick: true
-        });
+			$(".button-collapse").sideNav({
+				menuWidth: 250,
+				closeOnClick: true
+			});
         </script>
 
 

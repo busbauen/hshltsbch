@@ -1,39 +1,40 @@
 {% extends "base.html" %}
 {% block body %}
 
+
 <h5>Summary </h5>
 <table class="bordered highlight col s12">
-    <thead>
-        <tr>
-            <th>Jahr</th>
-            <th>Monat</th>
-            <th>Fixkosten Jahr</th>
-            <th>Fixkosten Monat</th>
-            <th>Ausgaben</th>
-            <th>Total Ausgaben</th>
-            <th>Einnahmen</th>
-            <th>Saldo</th>
-        </tr>
-    </thead>
+<thead>
+    <tr>
+        <th>Jahr</th>
+        <th>Monat</th>
+        <th>Fixkosten Jahr</th>
+        <th>Fixkosten Monat</th>
+        <th>Ausgaben</th>
+        <th>Total Ausgaben</th>
+        <th>Einnahmen</th>
+        <th>Saldo</th>
+    </tr>
+</thead>
 
-    <tbody>
-        {% for s in stats %}
-        <tr>
-            <td >{{ s[0] }}</td>
-            <td>{{ s[1] }}</td>
-            <td>{{ s[2] }}</td>
-            <td>{{ s[3] }}</td>
-            <td>{{ s[4] }}</td>
-            <td>{{ s[5] }}</td>
-            <td>{{ s[6] }}</td>
-            {% if s[7] > 0 %}
-            <td class="green" >{{ s[7] }}</td>
-            {% else %}
-            <td class="red">{{ s[7] }}</td>
-            {% endif %}
-        </tr>
-        {% endfor %}
-    </tbody>
+<tbody>
+    {% for s in stats %}
+    <tr>
+        <td >{{ s[0] }}</td>
+        <td>{{ s[1] }}</td>
+        <td>{{ s[2] }}</td>
+        <td>{{ s[3] }}</td>
+        <td>{{ s[4] }}</td>
+        <td>{{ s[5] }}</td>
+        <td>{{ s[6] }}</td>
+        {% if s[7] > 0 %}
+        <td class="green" >{{ s[7] }}</td>
+        {% else %}
+        <td class="red">{{ s[7] }}</td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</tbody>
 </table>
 
 <h5 strong >Durchschnittliche Ausgaben: {{ avg_out }} </h5>

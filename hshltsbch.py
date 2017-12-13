@@ -7,6 +7,7 @@ import datetime,sys
 from imp import reload
 from flask_bcrypt import Bcrypt
 import settings
+import os
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -33,8 +34,10 @@ def upload():
         file = request.files['file']
         if file.filename == '':
             return "no file selected"
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
+        #if file and allowed_file(file.filename):
+        if file:
+            #filename = secure_filename(file.filename)
+            filename = file.filename
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             from PIL import Image
             import sys
@@ -96,6 +99,7 @@ def get_current_month():
 
 
 
+@login_required
 @app.route('/fix')
 def fix():
     list_months_sidebar = get_all_months()

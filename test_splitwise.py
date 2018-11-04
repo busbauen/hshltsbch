@@ -34,7 +34,7 @@ def authorize():
     friends = sObj.getCurrentUser()
     return str(friends)
 
-@app.route("/")
+@app.route("/summary")
 def index():
     sObj = Splitwise(consumer_key, consumer_secret)
     sObj.setAccessToken({u'oauth_token_secret': u'u78abWn2RBFF0qVz7tKkoN3wm2USLxhJjPkXUCC0', u'oauth_token': u'kQuttkozbgRfzlel7GYpPZbR5oQUg3RwuejHCv1e'})
@@ -46,7 +46,7 @@ def index():
     for member in g.members:
         for balance in member.balances:
             print(member.first_name, balance.amount)
-    return ""
+    return str(expenses) 
 
 @app.route("/add")
 def add():

@@ -1,3 +1,6 @@
 Buch.ods
 hshltsbch.db
 settings
+*.pyc
+venv
+settings.py

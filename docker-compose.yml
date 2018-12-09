@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+    hshltsbch:
+        build: .
+        volumes:
+          - /opt/hshltsbch/hshltsbch.db:/opt/hshltsbch/db/hshltsbch.db
+        ports:
+          - 127.0.0.1:8000:8000
